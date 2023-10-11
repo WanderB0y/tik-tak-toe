@@ -4,6 +4,8 @@ const prompt = require('prompt-sync')();
 const process = require('process');
 const validate = require('./validation.js');
 const colors = require('colors');
+let firstPlayerName = "";
+let secondPlayerName = "";
 
 const COLUMN = 3;
 const ROWS = 3;
@@ -49,7 +51,7 @@ const iterateThroughBoard = () => {
             }
         }
         (i !== ( ROWS - 1))
-        ?  console.log("\n-----------")
+        ? console.log("\n———————————")
         : console.log(" ")
     }
 
@@ -57,102 +59,93 @@ const iterateThroughBoard = () => {
 }
 
 const pickBoardPosition = () => {
-   
     let row = null;
     let column = null;
 
+    ((count % 2) === 0) 
+    ? console.log(`Hello ${firstPlayerName} it is now your turn, Choose your move wisely!\n`)
+    : console.log(`Hello ${secondPlayerName} it is now your turn, Choose your move wisely!\n`);
 
-    ((count % 2) === 0) ? console.log("player 1") : console.log("player 2");
-
-
-    while(true) {
-
-
+   do {
         // Validation for Row
-        while(true){
+        do{
             row = prompt("Enter a Row Number (1 - 3):");
     
-            if(row > 3 || row < 1 || row === NaN || isNaN(row)){
-                console.log("Invalid Input, Please Try again")
-            } else{
-                break;
-            }
-        }
+            if(row > 3 || row < 1 || row === NaN || isNaN(row)) {
+                console.log(colors.error("Invalid Input, Please Try again"));
+            } 
+        } while ( row > 3 || row < 1 || row === NaN || isNaN(row) )
     
-        // Validation for Column
-        while(true){
 
+        // Validation for Column
+        do {
             column = prompt("Enter The Column Number (1 - 3): ");
 
             if( column > 3 || column < 1 || column === NaN || isNaN(column)){
                 console.log("Invalid Input, Please Try again")
-            } else {
-                break;
             }
-        }
-
+        } while ( column > 3 || column < 1 || column === NaN || isNaN(column))
 
         // Validation if a board position has value
         if (!BOARD[row - 1][column - 1].includes(" ")){
-            console.log("Invalid input, The current board position has a value, please try again");
-        } else {
-            break;
-        }
-    }
+            console.log(colors.error("Invalid input, The current board position has a value, please try again"));
+        } 
+    } while (!BOARD[row - 1][column - 1].includes(" "))
 
-    
-    
-
-   
-    if( (count % 2) === 0){
-        BOARD[row - 1][column - 1] = "O";
-    } else{
-        BOARD[row - 1][column - 1] = "X";
-    } 
+    (count % 2) === 0 ?  BOARD[row - 1][column - 1] = "O" : BOARD[row - 1][column - 1] = "X";
 }
-
-while(count != 9){
-    iterateThroughBoard();
-
-    pickBoardPosition();
-    if(validate(BOARD)){
-        iterateThroughBoard();
-        console.log("You Won");
-        
-        break;
-    }
-    count++;
-}
-
 
 const welcomePage = () => {
-    console.log("WELCOME TO TIK-TAC-TOE PROGRAM\n");
+    console.log("Welcome to the Tic-Tac-Toe game! Enjoy some thrilling matches of strategy and skill.\n");
 
     while (true){
         console.log("1 - Start");
         console.log("2 - vs AI");
-        console.log("3 - Exit Program\n");
-        
+        console.log("3 - Rules");
+        console.log("4 - Exit Program\n");
+
         let choice = prompt("Choice: ");
 
-        if (choice > 3 || choice < 1 || isNaN(choice)) { 
-            console.log(colors.error("Invalid Input, Please Try Again\n"));
-        } else {
-            break;
+        switch(choice){
+            case "1":
+                startPage();
+                break;
+            case "2":
+                break;
+            case "3":
+                break;
+            case "4":
+                self.close();
+                break;
+            default: console.log(colors.error("Invalid Input, Please Try Again"))
         }
     }
 }
 
-
 const startPage = () => {
-    const firstPlayerName = prompt("First player name: ")
-    const secondPlayerName = prompt("Second player name: ")
+    console.log("Please carefully follow the instruction provided.\n")
 
+    firstPlayerName = prompt("First player name: ")
+    secondPlayerName = prompt("Second player name: ")
 
+    while(count != 9){
+        console.log(`Hello, ${firstPlayerName} and ${secondPlayerName}! Get ready for an exciting game of Tic-Tac-Toe.\n`);
+    
+        iterateThroughBoard();
+        pickBoardPosition();
 
+        if(validate(BOARD)){
+            iterateThroughBoard();
+            (count % 2) === 0 
+            ? console.log(`Congrats ${firstPlayerName}, You are the winner of this game!`)
+            : console.log(`Congrats ${secondPlayerName}, You are the winner of this game!`)
+            welcomePage();
+        }
+        count++;
+    }
 }
 
-
+welcomePage();
 
 
 
