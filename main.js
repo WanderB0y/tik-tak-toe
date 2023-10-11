@@ -89,14 +89,15 @@ const pickBoardPosition = () => {
         // Validation if a board position has value
         if (!BOARD[row - 1][column - 1].includes(" ")){
             console.log(colors.error("Invalid input, The current board position has a value, please try again"));
-        } 
+        }
+
     } while (!BOARD[row - 1][column - 1].includes(" "))
 
     (count % 2) === 0 ?  BOARD[row - 1][column - 1] = "O" : BOARD[row - 1][column - 1] = "X";
 }
 
 const welcomePage = () => {
-    console.log("Welcome to the Tic-Tac-Toe game! Enjoy some thrilling matches of strategy and skill.\n");
+
 
     while (true){
         console.log("1 - Start");
@@ -108,6 +109,7 @@ const welcomePage = () => {
 
         switch(choice){
             case "1":
+                console.log("Welcome to the Tic-Tac-Toe game! Enjoy some thrilling matches of strategy and skill.\n");
                 startPage();
                 break;
             case "2":
